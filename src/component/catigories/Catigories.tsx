@@ -2,23 +2,15 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
 import api from "../../api/api";
-import UseMyStore from "../../store/UseMyStore";
 import { CatigoriesType } from "../../type/type";
 import AddCatigories from "./AddCatigories";
 
 function Catigories() {
   const [catigories, setCatigories] = useState<CatigoriesType[]>([]);
-  const Token =
-    localStorage.getItem("accessToken") ||
-    UseMyStore((state) => state.accessToken);
-
+ 
   const fetchCatigories = () => {
     api
-      .get("/api/categories?limit=10&page=1&order=ASC", {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      })
+      .get("/api/categories?limit=10&page=1&order=ASC")
       .then((res) => {
         setCatigories(res.data.items);
       })
@@ -28,7 +20,7 @@ function Catigories() {
   };
   useEffect(() => {
     fetchCatigories();
-  }, [Token]);
+  }, []);
 
   if (!catigories.length) {
     return (
@@ -42,11 +34,7 @@ function Catigories() {
   
 
     api
-      .delete(`/api/categories/${id} `, {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      })
+      .delete(`/api/categories/${id}`)
       .then(() => {
         setCatigories((i) => i.filter((item) => item.id !== id));
       })

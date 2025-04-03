@@ -1,14 +1,10 @@
 import { Button, Drawer, Form, Input } from "antd";
 import { useState } from "react";
 import api from "../../api/api";
-import UseMyStore from "../../store/UseMyStore";
 function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
   const [openDriwer, setOpenDraver] = useState(false);
   const [loading, setloading] = useState(false);
 
-  const Token =
-    localStorage.getItem("accessToken") ||
-    UseMyStore((state) => state.accessToken);
 
   return (
     <div className="container m-auto">
@@ -45,11 +41,7 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
                   imageUrl: values.imageUrl,
                   categoryId: Number(values.categoryId),
                 },
-                {
-                  headers: {
-                    Authorization: `Bearer ${Token}`,
-                  },
-                }
+                
               )
               .then((res) => {
                 console.log("Serverdan javob:", res.data);

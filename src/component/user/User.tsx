@@ -1,25 +1,16 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, message, Table } from "antd";
-import { UserType } from "../../type/type";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import AddUser from "./AddUser";
-import UseMyStore from "../../store/UseMyStore";
 import api from "../../api/api";
+import { UserType } from "../../type/type";
+import AddUser from "./AddUser";
 
 function User() {
   const [user, setUser] = useState<UserType[]>([]);
-  const Token =
-    localStorage.getItem("accessToken") ||
-    UseMyStore((state) => state.accessToken);
 
   const fetchUsers = () => {
     api
-      .get("/api/users?limit=10&page=1&order=ASC", {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      })
+      .get("/api/users?limit=10&page=1&order=ASC")
       .then((res) => {
         setUser(res.data.items);
       })
@@ -29,7 +20,7 @@ function User() {
   };
   useEffect(() => {
     fetchUsers();
-  }, [Token]);
+  }, []);
 
   if (!user.length) {
     return (
@@ -46,12 +37,8 @@ function User() {
       return message.error("Admin foydalanuvchini o'chirish mumkin emas");
     }
 
-    axios
-      .delete(`https://nt.softly.uz/api/users/${id} `, {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      })
+    api
+      .delete(`/api/users/${id}`)
       .then(() => {
         setUser((i) => i.filter((item) => item.id !== id));
       })

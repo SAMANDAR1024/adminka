@@ -21,10 +21,7 @@ function Product() {
   };
   useEffect(() => {
     fetchProducts();
-
     api.get("/api/categories?limit=10&page=1&order=ASC").then((res) => {
-      // console.log(res.data.items);
-
       setCatigoria(res.data.items);
     });
   }, []);

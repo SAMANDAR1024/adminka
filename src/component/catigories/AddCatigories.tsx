@@ -9,12 +9,10 @@
 import { Button, Drawer, Form, Input } from "antd";
 import { useState } from "react";
 import api from "../../api/api";
-import UseMyStore from "../../store/UseMyStore";
 function AddCatigories({ onCatigoriesAdded }: { onCatigoriesAdded?: () => void }) {
   const [openDriwer, setOpenDraver] = useState(false);
   const [loading, setloading] = useState(false);
 
-  const Token = localStorage.getItem("accessToken") || UseMyStore((state) => state.accessToken);
 
   return (
     <div className="container m-auto">
@@ -46,11 +44,6 @@ function AddCatigories({ onCatigoriesAdded }: { onCatigoriesAdded?: () => void }
                 {
                     name: values.name,
                     description: values.description,
-                },
-                {
-                  headers: {
-                    Authorization: `Bearer ${Token}`,
-                  },
                 }
               )
               .then((res) => {
