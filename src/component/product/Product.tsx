@@ -2,23 +2,16 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
 import api from "../../api/api";
-import UseMyStore from "../../store/UseMyStore";
-import { ProductType } from "../../type/type";
+import { CatigoriesType, ProductType } from "../../type/type";
 import AddProducts from "./AddProduct";
 
 function Product() {
   const [products, setProducts] = useState<ProductType[]>([]);
-  const Token =
-    localStorage.getItem("accessToken") ||
-    UseMyStore((state) => state.accessToken);
+  const [catigoria, setCatigoria] = useState<CatigoriesType[]>([]);
 
   const fetchProducts = () => {
     api
-      .get("/api/products?limit=10&page=1&order=ASC", {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      })
+      .get("/api/products?limit=10&page=1&order=ASC")
       .then((res) => {
         setProducts(res.data.items);
       })
@@ -28,7 +21,13 @@ function Product() {
   };
   useEffect(() => {
     fetchProducts();
-  }, [Token]);
+
+    api.get("/api/categories?limit=10&page=1&order=ASC").then((res) => {
+      // console.log(res.data.items);
+
+      setCatigoria(res.data.items);
+    });
+  }, []);
 
   if (!products.length) {
     return (
@@ -40,11 +39,7 @@ function Product() {
 
   function Delete(id: number) {
     api
-      .delete(`/api/products/${id} `, {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      })
+      .delete(`/api/products/${id}`)
       .then(() => {
         setProducts((i) => i.filter((item) => item.id !== id));
       })
@@ -60,22 +55,30 @@ function Product() {
       </div>
       <Table
         style={{ height: 100 }}
-        dataSource={products.map((item) => {
-          return {
-            ...item,
-            key: item.id,
-          };
-        })}
+        dataSource={products}
+        rowKey={"id"}
         columns={[
           {
             key: "id",
             title: "Id",
             dataIndex: "id",
           },
+          
           {
             key: "name",
             title: "Name",
             dataIndex: "name",
+          },
+          {
+            key: "categoryId",
+            title: "CategoryId",
+            dataIndex: "categoryId",
+            render: (categoryId) => {
+              const categor = catigoria.find((i) => {
+                return i.id === categoryId;
+              });
+              return categor?.name;
+            },
           },
           {
             key: "description",
@@ -97,7 +100,7 @@ function Product() {
           },
           {
             key: "createdAt",
-            title: "Qolganlar",
+            title: "Vaqti",
             dataIndex: "createdAt",
             render: (value) => {
               return new Date(value).toLocaleString("ru", {

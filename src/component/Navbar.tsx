@@ -11,6 +11,7 @@ import Saidbar from "./Sidebar";
 import UseMyStore from "../store/UseMyStore";
 import User from "./user/User";
 import Product from "./product/Product";
+import Catigories from "./catigories/Catigories";
 function Navbar() {
   return (
     <div className=" container m-auto ">
@@ -64,6 +65,7 @@ function Navbar() {
         <Route path="/users" element={<User />} />
         <Route path="/banners" element={<Banners />} />
         <Route path="/products" element={<Product />} />
+        <Route path="/catigories" element={<Catigories />} />
       </Routes>
     </div>
   );

@@ -7,7 +7,7 @@ const UseMyStore = create<AuthType>((setState) => {
   const ls = ls_strin ? JSON.parse(ls_strin) : undefined;
 
   if (ls) {
-    api.defaults.headers.accessToken = `Bearer ${ls.accessToken}`;
+    api.defaults.headers.Authorization = `Bearer ${ls.accessToken}`;
   }
 
   return {

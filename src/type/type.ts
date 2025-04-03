@@ -24,3 +24,10 @@ export type ProductType = {
   createdAt: string;
   imageUrl: string;
 };
+
+export type CatigoriesType={
+  id: number,
+  name: string
+  description: string
+  createdAt: string
+}

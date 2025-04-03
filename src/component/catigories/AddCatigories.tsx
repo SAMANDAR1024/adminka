@@ -1,21 +1,32 @@
-import { Button, Drawer, Form, Input, Radio } from "antd";
+
+// function AddCatigories() {
+//   return (
+//     <div>AddCatigories</div>
+//   )
+// }
+
+// export default AddCatigories
+import { Button, Drawer, Form, Input } from "antd";
 import { useState } from "react";
 import api from "../../api/api";
-function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
+import UseMyStore from "../../store/UseMyStore";
+function AddCatigories({ onCatigoriesAdded }: { onCatigoriesAdded?: () => void }) {
   const [openDriwer, setOpenDraver] = useState(false);
   const [loading, setloading] = useState(false);
+
+  const Token = localStorage.getItem("accessToken") || UseMyStore((state) => state.accessToken);
 
   return (
     <div className="container m-auto">
       <div className="flex items-center justify-between">
-        <h1 className="font-bold text-2xl p-2">Users</h1>
+        <h1 className="font-bold text-2xl p-2">Catigories</h1>
         <Button type="primary" onClick={() => setOpenDraver(true)}>
           + Add user
         </Button>
       </div>
 
       <Drawer
-        title="New User"
+        title="New Catigories"
         width={500}
         onClose={() => setOpenDraver(false)}
         open={openDriwer}
@@ -31,19 +42,21 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
 
             api
               .post(
-                `/api/users`,
+                `/api/categories`,
                 {
-                  name: values.name,
-                  email: values.email,
-                  password: values.password,
-                  image: values.image,
-                  role: values.role,
+                    name: values.name,
+                    description: values.description,
+                },
+                {
+                  headers: {
+                    Authorization: `Bearer ${Token}`,
+                  },
                 }
               )
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
                 setOpenDraver(false);
-                onUserAdded?.();
+                onCatigoriesAdded?.();
               })
               .catch((err) => {
                 console.error("Xatolik yuz berdi", err.message);
@@ -51,36 +64,11 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
               .finally(() => setloading(false));
           }}
         >
-          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+           <Form.Item name="name" label="Name" rules={[{ required: true }]}>
             <Input placeholder="Foydalanuvchi ismi" />
           </Form.Item>
-          <Form.Item name="email" label="Email" rules={[{ required: true }]}>
-            <Input placeholder="Emailni kiriting" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: true, min: 8 }]}
-          >
-            <Input type="password" placeholder="Kamida 8 ta belgi" />
-          </Form.Item>
-
-          <Form.Item
-            name="image"
-            label="Image URL"
-            rules={[{ required: true }]}
-          >
-            <Input placeholder="Rasm URL manzilini kiriting" />
-          </Form.Item>
-          <Form.Item name="role" label="Role" rules={[{ required: true }]}>
-            <Radio.Group
-              options={[
-                { label: "Customer", value: "customer" },
-                { label: "Admin", value: "admin" },
-              ]}
-              optionType="button"
-              buttonStyle="solid"
-            />
+          <Form.Item name="description" label="description" rules={[{ required: true }]}>
+            <Input placeholder="descriptionni kiriting" />
           </Form.Item>
           <Form.Item>
             <div className="flex gap-5 justify-end">
@@ -95,4 +83,4 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
   );
 }
 
-export default AddUser;
+export default AddCatigories;
