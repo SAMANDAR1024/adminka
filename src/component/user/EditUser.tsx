@@ -1,49 +1,38 @@
 import { Button, Drawer, Form, Input, Radio } from "antd";
 import { useState } from "react";
 import api from "../../api/api";
-function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
-  const [openDriwer, setOpenDraver] = useState(false);
+import { UserType } from "../../type/type";
+
+function EditUser({ item, set, fetchUsers }: { item?: UserType; set: any ; fetchUsers:()=> void}) {
   const [loading, setloading] = useState(false);
-
   return (
-    <div className="container m-auto">
-      <div className="flex items-center justify-between">
-        <h1 className="font-bold text-2xl p-2">Users</h1>
-        <Button type="primary" onClick={() => setOpenDraver(true)}>
-          + Add user
-        </Button>
-      </div>
+    <Drawer
+      onClose={() => {
+        set(undefined);
+      }}
+      open={item ? true : false}
+    >
+      {/* {item && <div>{item.name}</div>} */}
 
-      <Drawer
-        title="New User"
-        width={500}
-        onClose={() => setOpenDraver(false)}
-        open={openDriwer}
-        styles={{
-          body: { paddingBottom: 80 },
-        }}
-      >
+      {item && (
         <Form
+          initialValues={item}
           layout="vertical"
           onFinish={(values) => {
-            console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
             api
-              .post(
-                `/api/users`,
-                {
-                  name: values.name,
-                  email: values.email,
-                  password: values.password,
-                  image: values.image,
-                  role: values.role,
-                }
-              )
+              .patch(`/api/users/${item.id}`, {
+                name: values.name,
+                email: values.email,
+                password: values.password,
+                image: values.image,
+                role: values.role,
+              })
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
-                setOpenDraver(false);
-                onUserAdded?.();
+                set(undefined)
+                fetchUsers()
               })
               .catch((err) => {
                 console.error("Xatolik yuz berdi", err.message);
@@ -85,14 +74,14 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
           <Form.Item>
             <div className="flex gap-5 justify-end">
               <Button loading={loading} htmlType="submit" type="primary">
-                {loading ? "Jo‘natilmoqda..." : "+ Qo‘shish"}
+                {loading ? "O'zgartirilmoqda..." : "+ O'zgartirildi"}
               </Button>
             </div>
           </Form.Item>
         </Form>
-      </Drawer>
-    </div>
+      )}
+    </Drawer>
   );
 }
 
-export default AddUser;
+export default EditUser;

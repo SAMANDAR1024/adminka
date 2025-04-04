@@ -6,12 +6,12 @@ import {
 import { Route, Routes } from "react-router";
 
 import { Avatar, Dropdown } from "antd";
-import Banners from "./Banners";
 import Saidbar from "./Sidebar";
 import UseMyStore from "../store/UseMyStore";
 import User from "./user/User";
 import Product from "./product/Product";
 import Catigories from "./catigories/Catigories";
+import Banners from "./banners/Banners";
 function Navbar() {
   return (
     <div className=" container m-auto ">
@@ -63,9 +63,9 @@ function Navbar() {
 
       <Routes>
         <Route path="/users" element={<User />} />
-        <Route path="/banners" element={<Banners />} />
         <Route path="/products" element={<Product />} />
         <Route path="/catigories" element={<Catigories />} />
+        <Route path="/banners" element={<Banners />} />
       </Routes>
     </div>
   );

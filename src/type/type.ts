@@ -8,6 +8,14 @@ export type UserType = {
   createdAt: string;
 };
 
+export type BannersType={
+  id: number
+  title: string
+  imageUrl: string
+  isActive: boolean,
+  createdAt: string
+}[]
+
 export type AuthType = {
   accessToken: string;
   user: null;

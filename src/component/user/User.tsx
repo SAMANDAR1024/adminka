@@ -4,15 +4,17 @@ import { useEffect, useState } from "react";
 import api from "../../api/api";
 import { UserType } from "../../type/type";
 import AddUser from "./AddUser";
+import EditUser from "./EditUser";
 
 function User() {
   const [user, setUser] = useState<UserType[]>([]);
-
+  const [selectedState, setSelectedState] = useState<UserType>();
   const fetchUsers = () => {
     api
       .get("/api/users?limit=10&page=1&order=ASC")
       .then((res) => {
         setUser(res.data.items);
+        
       })
       .catch((e) => {
         console.log("Xato", e);
@@ -102,10 +104,15 @@ function User() {
             key: "id",
             dataIndex: "id",
             title: "Delete / Edit",
-            render: (id) => {
+            render: (id, toliqMalumot) => {
               return (
                 <div className="flex gap-2">
-                  <Button className="cursor-pointer" onClick={() => Delete(id)}>
+                  <Button
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setSelectedState(toliqMalumot);
+                    }}
+                  >
                     <EditOutlined />
                   </Button>
                   <Button
@@ -121,6 +128,8 @@ function User() {
           },
         ]}
       />
+
+      <EditUser item={selectedState} set={setSelectedState} fetchUsers={fetchUsers} />
     </div>
   );
 }

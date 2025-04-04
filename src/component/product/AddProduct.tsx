@@ -5,7 +5,6 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
   const [openDriwer, setOpenDraver] = useState(false);
   const [loading, setloading] = useState(false);
 
-
   return (
     <div className="container m-auto">
       <div className="flex items-center justify-between">
@@ -31,18 +30,14 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
             setloading(true);
 
             api
-              .post(
-                `/api/products`,
-                {
-                  name: values.name,
-                  description: values.description,
-                  price: Number(values.price),
-                  stock: Number(values.stock),
-                  imageUrl: values.imageUrl,
-                  categoryId: Number(values.categoryId),
-                },
-                
-              )
+              .post(`/api/products`, {
+                name: values.name,
+                description: values.description,
+                price: Number(values.price),
+                stock: Number(values.stock),
+                imageUrl: values.imageUrl,
+                categoryId: Number(values.categoryId),
+              })
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
                 setOpenDraver(false);
@@ -87,6 +82,8 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
             label="categoryId"
             rules={[{ required: true }]}
           >
+            {/* <Select 
+            options={}/> */}
             <Input placeholder="category Id kiriting" />
           </Form.Item>
           <Form.Item>
