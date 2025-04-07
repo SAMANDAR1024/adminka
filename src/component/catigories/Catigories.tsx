@@ -4,11 +4,16 @@ import { useEffect, useState } from "react";
 import api from "../../api/api";
 import { CatigoriesType } from "../../type/type";
 import AddCatigories from "./AddCatigories";
+import EditCategories from "./EditCategories";
 
 function Catigories() {
   const [catigories, setCatigories] = useState<CatigoriesType[]>([]);
- 
+  const [categoriesSelected, setCategoriesSelected] =
+    useState<CatigoriesType>();
+  const [loading, setloading] = useState(true);
+
   const fetchCatigories = () => {
+    setloading(true)
     api
       .get("/api/categories?limit=10&page=1&order=ASC")
       .then((res) => {
@@ -16,23 +21,23 @@ function Catigories() {
       })
       .catch((e) => {
         console.log("Xato", e);
-      });
+      }).finally(()=>{
+        setloading(false)
+      })
   };
   useEffect(() => {
     fetchCatigories();
   }, []);
 
-  if (!catigories.length) {
-    return (
-      <div className=" absolute left-[50%] top-[50%]  inset-0">
-        <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  // if (!catigories.length) {
+  //   return (
+  //     <div className=" absolute left-[50%] top-[50%]  inset-0">
+  //       <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
+  //     </div>
+  //   );
+  // }
 
   function Delete(id: number) {
-  
-
     api
       .delete(`/api/categories/${id}`)
       .then(() => {
@@ -49,6 +54,7 @@ function Catigories() {
         <AddCatigories onCatigoriesAdded={fetchCatigories} />
       </div>
       <Table
+      loading={loading}
         style={{ height: 100 }}
         dataSource={catigories.map((item) => {
           return {
@@ -76,10 +82,15 @@ function Catigories() {
             key: "id",
             dataIndex: "id",
             title: "Delete / Edit",
-            render: (id) => {
+            render: (id, categories_m) => {
               return (
                 <div className="flex gap-2">
-                  <Button className="cursor-pointer" onClick={() => Delete(id)}>
+                  <Button
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setCategoriesSelected(categories_m);
+                    }}
+                  >
                     <EditOutlined />
                   </Button>
                   <Button
@@ -94,6 +105,12 @@ function Catigories() {
             },
           },
         ]}
+      />
+
+      <EditCategories
+        item={categoriesSelected}
+        set={setCategoriesSelected}
+        fetchCatigories={fetchCatigories}
       />
     </div>
   );

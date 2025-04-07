@@ -24,7 +24,7 @@ function Saidbar() {
           },
           {
             to: "/orders",
-            label: "orders",
+            label: "Orders",
           },
         ].map((item) => {
           return (

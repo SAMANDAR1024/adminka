@@ -7,14 +7,29 @@ export type UserType = {
   role: string;
   createdAt: string;
 };
-
+export type OrderType=  {
+  id: number
+  customerId: number
+  totalPrice:number
+  status: string
+  createdAt: string
+  items: [
+    {
+      id: number
+      orderId:number
+      productId: number
+      quantity: number
+      price: string
+    }
+  ]
+},
 export type BannersType={
   id: number
   title: string
   imageUrl: string
   isActive: boolean,
   createdAt: string
-}[]
+}
 
 export type AuthType = {
   accessToken: string;

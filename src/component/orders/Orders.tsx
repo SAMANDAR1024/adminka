@@ -1,23 +1,29 @@
+// function Orders() {
+//   return (
+//     <div>Orders</div>
+//   )
+// }
+
+// export default Orders
+
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
 import api from "../../api/api";
-import { CatigoriesType, ProductType } from "../../type/type";
-import AddProducts from "./AddProduct";
-import EditProduct from "./EditProduct";
+import { OrderType } from "../../type/type";
 
-function Product() {
-  const [products, setProducts] = useState<ProductType[]>([]);
-  const [catigoria, setCatigoria] = useState<CatigoriesType[]>([]);
+function Orders() {
+
+  const [orders, setOrders] = useState<OrderType[]>([])  
   const [loading, setLoading] = useState(true);
-  const [ProductSelected, setProductSelected] = useState<ProductType>();
+  //   const [ProductSelected, setProductSelected] = useState<ProductType>();
 
-  const fetchProducts = () => {
+  const fetchOrders = () => {
     setLoading(true);
     api
-      .get("/api/products?limit=10&page=1&order=ASC")
+      .get("/api/orders?limit=10&page=1&order=ASC")
       .then((res) => {
-        setProducts(res.data.items);
+        setOrders(res.data.items);
       })
       .catch((e) => {
         console.log("Xato", e);
@@ -27,25 +33,25 @@ function Product() {
       });
   };
   useEffect(() => {
-    fetchProducts();
-    api.get("/api/categories?limit=10&page=1&order=ASC").then((res) => {
-      setCatigoria(res.data.items);
-    });
+    fetchOrders();
+    // api.get("/api/categories?limit=10&page=1&order=ASC").then((res) => {
+    //   setCatigoria(res.data.items);
+    // });
   }, []);
 
-  // if (loading) {
-  //   return (
-  //     <div className=" absolute left-[50%] top-[50%]  inset-0">
-  //       <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className=" absolute left-[50%] top-[50%]  inset-0">
+        <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   function Delete(id: number) {
     api
       .delete(`/api/products/${id}`)
       .then(() => {
-        setProducts((i) => i.filter((item) => item.id !== id));
+        setOrders((i) => i.filter((item) => item.id !== id));
       })
       .catch((e) => {
         console.log("XATO!", e);
@@ -55,12 +61,11 @@ function Product() {
   return (
     <div className="pl-40  p-10 overflow-y-auto h-[600px]">
       <div className=" flex justify-between items-center mb-5">
-        <AddProducts onProductAdded={fetchProducts} />
+        {/* <AddOrders onProductAdded={fetchOrders} /> */}
       </div>
       <Table
-        loading={loading}
         style={{ height: 100 }}
-        dataSource={products}
+        dataSource={orders}
         rowKey={"id"}
         columns={[
           {
@@ -131,14 +136,14 @@ function Product() {
             key: "id",
             dataIndex: "id",
             title: "Delete / Edit",
-            render: (id, m) => {
+            render: (id) => {
               return (
                 <div className="flex gap-2">
                   <Button
                     className="cursor-pointer"
-                    onClick={() => {
-                      setProductSelected(m);
-                    }}
+                    // onClick={() => {
+                    //   setProductSelected(m);
+                    // }}
                   >
                     <EditOutlined />
                   </Button>
@@ -155,13 +160,13 @@ function Product() {
           },
         ]}
       />
-      <EditProduct
+      {/* <EditOrders
         item={ProductSelected}
         set={setProductSelected}
-        fetchProducts={fetchProducts}
-      />
+        fetchOrders={fetchOrders}
+      /> */}
     </div>
   );
 }
 
-export default Product;
+export default Orders;

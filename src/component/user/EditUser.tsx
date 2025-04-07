@@ -1,9 +1,17 @@
 import { Button, Drawer, Form, Input, Radio } from "antd";
 import { useState } from "react";
-import api from "../../api/api";
+import UserApi from "../../api/UserApi";
 import { UserType } from "../../type/type";
 
-function EditUser({ item, set, fetchUsers }: { item?: UserType; set: any ; fetchUsers:()=> void}) {
+function EditUser({
+  item,
+  set,
+  fetchUsers,
+}: {
+  item?: UserType;
+  set: any;
+  fetchUsers: () => void;
+}) {
   const [loading, setloading] = useState(false);
   return (
     <Drawer
@@ -12,8 +20,6 @@ function EditUser({ item, set, fetchUsers }: { item?: UserType; set: any ; fetch
       }}
       open={item ? true : false}
     >
-      {/* {item && <div>{item.name}</div>} */}
-
       {item && (
         <Form
           initialValues={item}
@@ -21,18 +27,11 @@ function EditUser({ item, set, fetchUsers }: { item?: UserType; set: any ; fetch
           onFinish={(values) => {
             setloading(true);
 
-            api
-              .patch(`/api/users/${item.id}`, {
-                name: values.name,
-                email: values.email,
-                password: values.password,
-                image: values.image,
-                role: values.role,
-              })
+            UserApi.update(item, values)
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
-                set(undefined)
-                fetchUsers()
+                set(undefined);
+                fetchUsers();
               })
               .catch((err) => {
                 console.error("Xatolik yuz berdi", err.message);

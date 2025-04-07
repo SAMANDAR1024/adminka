@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, message, Table } from "antd";
 import { useEffect, useState } from "react";
-import api from "../../api/api";
+import UserApi from "../../api/UserApi";
 import { UserType } from "../../type/type";
 import AddUser from "./AddUser";
 import EditUser from "./EditUser";
@@ -9,28 +9,31 @@ import EditUser from "./EditUser";
 function User() {
   const [user, setUser] = useState<UserType[]>([]);
   const [selectedState, setSelectedState] = useState<UserType>();
+  const [loading, setloading] = useState(true);
   const fetchUsers = () => {
-    api
-      .get("/api/users?limit=10&page=1&order=ASC")
+    setloading(true);
+    UserApi.getAll({ limit: 10, page: 1 })
       .then((res) => {
         setUser(res.data.items);
-        
       })
       .catch((e) => {
         console.log("Xato", e);
+      })
+      .finally(() => {
+        setloading(false);
       });
   };
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  if (!user.length) {
-    return (
-      <div className=" absolute left-[50%] top-[50%]  inset-0">
-        <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className=" absolute left-[50%] top-[50%]  inset-0">
+  //       <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
+  //     </div>
+  //   );
+  // }
 
   function Delete(id: number) {
     const User = user.find((item) => item.id === id);
@@ -39,8 +42,7 @@ function User() {
       return message.error("Admin foydalanuvchini o'chirish mumkin emas");
     }
 
-    api
-      .delete(`/api/users/${id}`)
+    UserApi.getOne(id)
       .then(() => {
         setUser((i) => i.filter((item) => item.id !== id));
       })
@@ -55,6 +57,7 @@ function User() {
         <AddUser onUserAdded={fetchUsers} />
       </div>
       <Table
+        loading={loading}
         style={{ height: 100 }}
         dataSource={user.map((item) => {
           return {
@@ -129,7 +132,11 @@ function User() {
         ]}
       />
 
-      <EditUser item={selectedState} set={setSelectedState} fetchUsers={fetchUsers} />
+      <EditUser
+        item={selectedState}
+        set={setSelectedState}
+        fetchUsers={fetchUsers}
+      />
     </div>
   );
 }

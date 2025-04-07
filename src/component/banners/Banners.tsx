@@ -4,31 +4,38 @@ import { useEffect, useState } from "react";
 import api from "../../api/api";
 import { BannersType } from "../../type/type";
 import AddBanners from "./AddBanners";
+import EditBanner from "./EditBanner";
+import BannersApi from "../../api/BannersApi";
 
 function Banners() {
-  const [banners, setBanners] = useState<BannersType>([]);
+  const [banners, setBanners] = useState<BannersType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [bannerSelected, setBannerSelected] = useState<BannersType>();
 
   const fetchBanners = () => {
-    api
-      .get("/api/banners?limit=10&page=1&order=ASC")
+    setLoading(true);
+    BannersApi.getAll({ limit: 10, page: 1 })
       .then((res) => {
         setBanners(res.data.items);
       })
       .catch((e) => {
         console.log("Xato", e);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
   useEffect(() => {
     fetchBanners();
   }, []);
 
-  if (!banners.length) {
-    return (
-      <div className=" absolute left-[50%] top-[50%]  inset-0">
-        <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  //   if (loading) {
+  //     return (
+  //       <div className=" absolute left-[50%] top-[50%]  inset-0">
+  //         <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
+  //       </div>
+  //     );
+  //   }
 
   function Delete(id: number) {
     api
@@ -47,13 +54,9 @@ function Banners() {
         <AddBanners onBannersAdded={fetchBanners} />
       </div>
       <Table
+        loading={loading}
         style={{ height: 100 }}
-        dataSource={banners.map((item) => {
-          return {
-            ...item,
-            key: item.id,
-          };
-        })}
+        dataSource={banners}
         columns={[
           {
             key: "id",
@@ -113,10 +116,15 @@ function Banners() {
             key: "id",
             dataIndex: "id",
             title: "Delete / Edit",
-            render: (id) => {
+            render: (id, malumot) => {
               return (
                 <div className="flex gap-2">
-                  <Button className="cursor-pointer" onClick={() => Delete(id)}>
+                  <Button
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setBannerSelected(malumot);
+                    }}
+                  >
                     <EditOutlined />
                   </Button>
                   <Button
@@ -131,6 +139,11 @@ function Banners() {
             },
           },
         ]}
+      />
+      <EditBanner
+        item={bannerSelected}
+        set={setBannerSelected}
+        fetchBanners={fetchBanners}
       />
     </div>
   );

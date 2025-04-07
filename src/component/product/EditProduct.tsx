@@ -1,9 +1,17 @@
 import { Button, Drawer, Form, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import api from "../../api/api";
-import { CatigoriesType } from "../../type/type";
-function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
-  const [openDriwer, setOpenDraver] = useState(false);
+import { CatigoriesType, ProductType } from "../../type/type";
+
+function EditProduct({
+  item,
+  set,
+  fetchProducts,
+}: {
+  item?: ProductType;
+  set: any;
+  fetchProducts: () => void;
+}) {
   const [loading, setloading] = useState(false);
   const [categories, setCategories] = useState<CatigoriesType[]>([]);
 
@@ -12,32 +20,24 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
       setCategories(res.data.items);
     });
   }, []);
+  if (!item) return null;
   return (
-    <div className="container m-auto">
-      <div className="flex items-center justify-between">
-        <h1 className="font-bold text-2xl p-2">Product</h1>
-        <Button type="primary" onClick={() => setOpenDraver(true)}>
-          + Add Product
-        </Button>
-      </div>
-
-      <Drawer
-        title="New Product"
-        width={500}
-        onClose={() => setOpenDraver(false)}
-        open={openDriwer}
-        styles={{
-          body: { paddingBottom: 80 },
-        }}
-      >
+    <Drawer
+      onClose={() => {
+        set(undefined);
+      }}
+      open={item ? true : false}
+    >
+      {item && (
         <Form
           layout="vertical"
+          initialValues={item}
           onFinish={(values) => {
             console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
             api
-              .post(`/api/products`, {
+              .patch(`/api/products/${item.id}`, {
                 name: values.name,
                 description: values.description,
                 price: Number(values.price),
@@ -47,8 +47,8 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
               })
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
-                setOpenDraver(false);
-                onProductAdded?.();
+                set(false);
+                fetchProducts?.();
               })
               .catch((err) => {
                 console.error(
@@ -97,6 +97,7 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
                 };
               })}
             />
+            {/* <Input placeholder="category Id kiriting" /> */}
           </Form.Item>
           <Form.Item>
             <div className="flex gap-5 justify-end">
@@ -106,9 +107,9 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
             </div>
           </Form.Item>
         </Form>
-      </Drawer>
-    </div>
+      )}
+    </Drawer>
   );
 }
 
-export default AddProducts;
+export default EditProduct;
