@@ -12,6 +12,7 @@ import User from "./user/User";
 import Product from "./product/Product";
 import Catigories from "./catigories/Catigories";
 import Banners from "./banners/Banners";
+import Orders from "./orders/Orders";
 function Navbar() {
   return (
     <div className=" container m-auto ">
@@ -66,7 +67,7 @@ function Navbar() {
         <Route path="/products" element={<Product />} />
         <Route path="/catigories" element={<Catigories />} />
         <Route path="/banners" element={<Banners />} />
-        <Route path="/orders" element={<Banners />} />
+        <Route path="/orders" element={<Orders />} />
       </Routes>
     </div>
   );

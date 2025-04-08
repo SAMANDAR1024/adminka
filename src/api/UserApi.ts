@@ -3,7 +3,7 @@ import api from "./api";
 
 const UserApi = {
   getOne: (id: number) => {
-    return api.get(`/api/users/${id}`);
+    return api.delete(`/api/users/${id}`);
   },
 
   getAll: (params: { limit: number; page: number }) => {
