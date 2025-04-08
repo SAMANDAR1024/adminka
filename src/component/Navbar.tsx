@@ -3,7 +3,7 @@ import {
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Route, Routes } from "react-router";
+import { Link, Route, Routes } from "react-router";
 
 import { Avatar, Dropdown } from "antd";
 import UseMyStore from "../store/UseMyStore";
@@ -18,7 +18,9 @@ function Navbar() {
   return (
     <div className=" container m-auto ">
       <div className=" flex p-2 justify-between bg-white ">
-        <div className="text-2xl">Logo</div>
+        <Link to={"/"} className="text-2xl">
+          Logo
+        </Link>
         <Dropdown
           menu={{
             items: [
