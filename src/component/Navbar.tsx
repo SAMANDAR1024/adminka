@@ -6,17 +6,18 @@ import {
 import { Route, Routes } from "react-router";
 
 import { Avatar, Dropdown } from "antd";
-import Saidbar from "./Sidebar";
 import UseMyStore from "../store/UseMyStore";
-import User from "./user/User";
-import Product from "./product/Product";
-import Catigories from "./catigories/Catigories";
 import Banners from "./banners/Banners";
+import Catigories from "./catigories/Catigories";
+import Dashboard from "./dawboard/Dashboard";
 import Orders from "./orders/Orders";
+import Product from "./product/Product";
+import Saidbar from "./Sidebar";
+import User from "./user/User";
 function Navbar() {
   return (
     <div className=" container m-auto ">
-      <div className=" flex p-2 justify-between bg-slate-800 text-white">
+      <div className=" flex p-2 justify-between bg-white ">
         <div className="text-2xl">Logo</div>
         <Dropdown
           menu={{
@@ -63,6 +64,7 @@ function Navbar() {
       <Saidbar />
 
       <Routes>
+        <Route path="/" element={<Dashboard />} />
         <Route path="/users" element={<User />} />
         <Route path="/products" element={<Product />} />
         <Route path="/catigories" element={<Catigories />} />

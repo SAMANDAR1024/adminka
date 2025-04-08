@@ -7,9 +7,9 @@ import UseMyStore from "./store/UseMyStore";
 function App() {
 const Token = UseMyStore()
   return (
-    <>
+    <div className="">
       {Token.user ? <Navbar /> : <LoginPage />}
-    </>
+    </div>
   );
 }
 
