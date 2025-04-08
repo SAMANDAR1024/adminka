@@ -1,6 +1,6 @@
 import { Button, Drawer, Form, Input, Switch } from "antd";
 import { useState } from "react";
-import api from "../../api/api";
+import BannersApi from "../../api/BannersApi";
 import { BannersType } from "../../type/type";
 
 function EditBanner({
@@ -25,7 +25,6 @@ function EditBanner({
         <Form
           layout="vertical"
           initialValues={item}
-          
           onFinish={(values) => {
             console.log("item.id:", item?.id);
 
@@ -35,16 +34,9 @@ function EditBanner({
             }
             setloading(true);
 
-            api
-              .patch(`/api/banners/${item.id}`, {
-                
-                title: values.title,
-                isActive: values.isActive,
-                imageUrl: values.imageUrl,
-              })
-              
-              .then((res) => {
+            BannersApi.update(item, values)
 
+              .then((res) => {
                 console.log("Serverdan javob:", res.data);
                 set(false);
                 fetchBanners?.();

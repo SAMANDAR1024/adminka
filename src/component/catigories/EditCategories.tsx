@@ -8,7 +8,7 @@
 
 import { Button, Drawer, Form, Input } from "antd";
 import { useState } from "react";
-import api from "../../api/api";
+import CategoriesApi from "../../api/CategoriesApi";
 import { CatigoriesType } from "../../type/type";
 
 function EditCategories({
@@ -37,11 +37,7 @@ function EditCategories({
             console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
-            api
-              .patch(`/api/categories/${item.id}`, {
-                name: values.name,
-                description: values.description,
-              })
+            CategoriesApi.update(item, values)
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
                 set(false);

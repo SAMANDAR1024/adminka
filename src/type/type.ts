@@ -22,7 +22,7 @@ export type OrderType=  {
       price: string
     }
   ]
-},
+}
 export type BannersType={
   id: number
   title: string

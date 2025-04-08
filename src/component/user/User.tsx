@@ -45,6 +45,7 @@ function User() {
     UserApi.getOne(id)
       .then(() => {
         setUser((i) => i.filter((item) => item.id !== id));
+        fetchUsers()
       })
       .catch((e) => {
         console.log("XATO!", e);

@@ -1,7 +1,8 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
-import api from "../../api/api";
+import CategoriesApi from "../../api/CategoriesApi";
+import ProductApi from "../../api/ProductApi";
 import { CatigoriesType, ProductType } from "../../type/type";
 import AddProducts from "./AddProduct";
 import EditProduct from "./EditProduct";
@@ -14,8 +15,7 @@ function Product() {
 
   const fetchProducts = () => {
     setLoading(true);
-    api
-      .get("/api/products?limit=10&page=1&order=ASC")
+    ProductApi.getAll()
       .then((res) => {
         setProducts(res.data.items);
       })
@@ -28,7 +28,7 @@ function Product() {
   };
   useEffect(() => {
     fetchProducts();
-    api.get("/api/categories?limit=10&page=1&order=ASC").then((res) => {
+    CategoriesApi.getAll().then((res) => {
       setCatigoria(res.data.items);
     });
   }, []);
@@ -42,8 +42,7 @@ function Product() {
   // }
 
   function Delete(id: number) {
-    api
-      .delete(`/api/products/${id}`)
+    ProductApi.delete(id)
       .then(() => {
         setProducts((i) => i.filter((item) => item.id !== id));
       })

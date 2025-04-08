@@ -1,6 +1,6 @@
 import { Button, Drawer, Form, Input, Radio } from "antd";
 import { useState } from "react";
-import api from "../../api/api";
+import UserApi from "../../api/UserApi";
 function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
   const [openDriwer, setOpenDraver] = useState(false);
   const [loading, setloading] = useState(false);
@@ -29,17 +29,7 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
             console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
-            api
-              .post(
-                `/api/users`,
-                {
-                  name: values.name,
-                  email: values.email,
-                  password: values.password,
-                  image: values.image,
-                  role: values.role,
-                }
-              )
+            UserApi.getAdd(values)
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
                 setOpenDraver(false);

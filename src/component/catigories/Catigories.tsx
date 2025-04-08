@@ -1,7 +1,7 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
 import { useEffect, useState } from "react";
-import api from "../../api/api";
+import CategoriesApi from "../../api/CategoriesApi";
 import { CatigoriesType } from "../../type/type";
 import AddCatigories from "./AddCatigories";
 import EditCategories from "./EditCategories";
@@ -13,17 +13,17 @@ function Catigories() {
   const [loading, setloading] = useState(true);
 
   const fetchCatigories = () => {
-    setloading(true)
-    api
-      .get("/api/categories?limit=10&page=1&order=ASC")
+    setloading(true);
+    CategoriesApi.getAll()
       .then((res) => {
         setCatigories(res.data.items);
       })
       .catch((e) => {
         console.log("Xato", e);
-      }).finally(()=>{
-        setloading(false)
       })
+      .finally(() => {
+        setloading(false);
+      });
   };
   useEffect(() => {
     fetchCatigories();
@@ -38,8 +38,7 @@ function Catigories() {
   // }
 
   function Delete(id: number) {
-    api
-      .delete(`/api/categories/${id}`)
+    CategoriesApi.delete(id)
       .then(() => {
         setCatigories((i) => i.filter((item) => item.id !== id));
       })
@@ -54,7 +53,7 @@ function Catigories() {
         <AddCatigories onCatigoriesAdded={fetchCatigories} />
       </div>
       <Table
-      loading={loading}
+        loading={loading}
         style={{ height: 100 }}
         dataSource={catigories.map((item) => {
           return {

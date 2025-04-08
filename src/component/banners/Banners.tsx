@@ -38,8 +38,7 @@ function Banners() {
   //   }
 
   function Delete(id: number) {
-    api
-      .delete(`/api/banners/${id}`)
+    BannersApi.delete(id)
       .then(() => {
         setBanners((i) => i.filter((item) => item.id !== id));
       })

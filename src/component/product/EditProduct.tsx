@@ -1,6 +1,7 @@
 import { Button, Drawer, Form, Input, Select } from "antd";
 import { useEffect, useState } from "react";
-import api from "../../api/api";
+import CategoriesApi from "../../api/CategoriesApi";
+import ProductApi from "../../api/ProductApi";
 import { CatigoriesType, ProductType } from "../../type/type";
 
 function EditProduct({
@@ -16,7 +17,7 @@ function EditProduct({
   const [categories, setCategories] = useState<CatigoriesType[]>([]);
 
   useEffect(() => {
-    api.get("/api/categories").then((res) => {
+    CategoriesApi.getAll().then((res) => {
       setCategories(res.data.items);
     });
   }, []);
@@ -36,15 +37,7 @@ function EditProduct({
             console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
-            api
-              .patch(`/api/products/${item.id}`, {
-                name: values.name,
-                description: values.description,
-                price: Number(values.price),
-                stock: Number(values.stock),
-                imageUrl: values.imageUrl,
-                categoryId: Number(values.categoryId),
-              })
+            ProductApi.update(item, values)
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
                 set(false);

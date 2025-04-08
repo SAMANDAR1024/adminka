@@ -1,6 +1,6 @@
 import { Button, Drawer, Form, Input, Switch } from "antd";
 import { useState } from "react";
-import api from "../../api/api";
+import BannersApi from "../../api/BannersApi";
 function AddBanners({ onBannersAdded }: { onBannersAdded?: () => void }) {
   const [openDriwer, setOpenDraver] = useState(false);
   const [loading, setloading] = useState(false);
@@ -28,13 +28,7 @@ function AddBanners({ onBannersAdded }: { onBannersAdded?: () => void }) {
           onFinish={(values) => {
             console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
-
-            api
-              .post(`/api/banners`, {
-                title: values.title,
-                isActive: values.isActive,
-                imageUrl: values.imageUrl,
-              })
+            BannersApi.getAdd(values)
               .then((res) => {
                 console.log("Serverdan javob:", res.data);
                 setOpenDraver(false);
