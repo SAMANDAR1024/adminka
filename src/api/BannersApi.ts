@@ -22,11 +22,11 @@ const BannersApi = {
       imageUrl: values.imageUrl,
     });
   },
-  getAdd: (values: BannersType) => {
+  getAdd: (values: any) => {
     return api.post(`/api/banners`, {
       title: values.title,
       isActive: values.isActive,
-      imageUrl: values.imageUrl,
+      imageUrl: values.imageUrl.file.response.url,
     });
   },
 };

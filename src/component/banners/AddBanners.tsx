@@ -1,4 +1,4 @@
-import { Button, Drawer, Form, Input, Switch } from "antd";
+import { Button, Drawer, Form, Input, Switch, Upload } from "antd";
 import { useState } from "react";
 import BannersApi from "../../api/BannersApi";
 function AddBanners({ onBannersAdded }: { onBannersAdded?: () => void }) {
@@ -54,9 +54,13 @@ function AddBanners({ onBannersAdded }: { onBannersAdded?: () => void }) {
           <Form.Item
             name="imageUrl"
             label="Image URL"
-            rules={[{ required: true }]}
           >
-            <Input placeholder="Rasm URL manzilini kiriting" />
+            <Upload
+              name="file"
+              action={`https://nt.softly.uz/api/files/upload`}
+            >
+              <Button>Click to Upload</Button>
+            </Upload>{" "}
           </Form.Item>
 
           <Form.Item>

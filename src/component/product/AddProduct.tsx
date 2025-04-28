@@ -1,4 +1,4 @@
-import { Button, Drawer, Form, Input, Select } from "antd";
+import { Button, Drawer, Form, Input, Select, Upload } from "antd";
 import { useEffect, useState } from "react";
 import CategoriesApi from "../../api/CategoriesApi";
 import ProductApi from "../../api/ProductApi";
@@ -74,7 +74,12 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
             label="Image URL"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Rasm URL manzilini kiriting" />
+            <Upload
+              name="file"
+              action={`https://nt.softly.uz/api/files/upload`}
+            >
+              <Button>Click to Upload</Button>
+            </Upload>
           </Form.Item>
 
           <Form.Item

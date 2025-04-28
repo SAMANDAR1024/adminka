@@ -1,4 +1,3 @@
-import { UserType } from "../type/type";
 import api from "./api";
 
 const UserApi = {
@@ -12,22 +11,22 @@ const UserApi = {
     });
   },
 
-  update: (values: UserType, item: any) => {
+  update: (values: any, item: any) => {
     return api.patch(`/api/users/${item.id}`, {
       name: values.name,
       email: values.email,
       password: values.password,
-      image: values.image,
+      image: values.image.file.response.url,
       role: values.role,
     });
   },
 
-  getAdd: (values: UserType) => {
+  getAdd: (values: any) => {
     return api.post(`/api/users`, {
       name: values.name,
       email: values.email,
       password: values.password,
-      image: values.image,
+      image: values.image.file.response.url,
       role: values.role,
     });
   },

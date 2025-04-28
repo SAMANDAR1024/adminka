@@ -1,4 +1,4 @@
-import { Button, Drawer, Form, Input, Radio } from "antd";
+import { Button, Drawer, Form, Input, Radio, Upload } from "antd";
 import { useState } from "react";
 import UserApi from "../../api/UserApi";
 function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
@@ -60,7 +60,12 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
             label="Image URL"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Rasm URL manzilini kiriting" />
+            <Upload
+              name="file"
+              action={`https://nt.softly.uz/api/files/upload`}
+            >
+              <Button>Click to Upload</Button>
+            </Upload>
           </Form.Item>
           <Form.Item name="role" label="Role" rules={[{ required: true }]}>
             <Radio.Group

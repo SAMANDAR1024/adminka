@@ -21,13 +21,13 @@ const ProductApi = {
     });
   },
 
-  getAdd: (values: ProductType) => {
+  getAdd: (values: any) => {
     return api.post(`/api/products`, {
       name: values.name,
       description: values.description,
       price: Number(values.price),
       stock: Number(values.stock),
-      imageUrl: values.imageUrl,
+      imageUrl: values.imageUrl.file.response.url,
       categoryId: Number(values.categoryId),
     });
   },
