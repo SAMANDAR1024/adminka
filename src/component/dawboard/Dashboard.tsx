@@ -1,17 +1,23 @@
-import { message, Spin } from "antd";
+import { Form, Input, message, Spin } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { DashboardType } from "../../type/type";
+import { ApexCart } from "./ApexCart";
 
+export type ChartType = {
+  date: string;
+  count: string;
+}[];
 function Dashboard() {
   const [dashboard, setDashboard] = useState<DashboardType>();
   const [loading, setLoading] = useState(true);
-
+  const [chart, setChart] = useState<ChartType>([]);
+  const [value1, setValue1] = useState("2025-04-10");
+  const [value2, setValue2] = useState("2025-04-29");
   useEffect(() => {
     axios
       .get(`https://nt.softly.uz/api/statistics/dashboard`)
       .then((res) => {
-        console.log(res.data);
         setDashboard(res.data);
         setLoading(false);
       })
@@ -22,7 +28,20 @@ function Dashboard() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+
+    axios
+      .post(`https://nt.softly.uz/api/statistics/daily-order-counts`, {
+        startDate: value1,
+        endDate: value2,
+      })
+      .then((res) => {
+        console.log("Serverdan javob:", res.data);
+        setChart(res.data);
+      })
+      .catch((err) => {
+        console.error("Xatolik yuz berdi:", err.response?.data || err.message);
+      });
+  }, [value1, value2]);
 
   return (
     <div className="container pl-40 mx-auto p-8 bg-gray-50 h-[620px] overflow-auto">
@@ -137,6 +156,33 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      <ApexCart chart={chart} />
+      <Form layout="vertical">
+        <Form.Item
+          name="startDate"
+          label={"Boshlanish Sanasi...!"}
+          rules={[{ required: true }]}
+        >
+          <Input
+            value={value1}
+            onChange={(e) => setValue1(e.target.value)}
+            type="date"
+            style={{ width: 300 }}
+          />
+        </Form.Item>
+        <Form.Item
+          name="endDate"
+          label={"Tugash sanasi!"}
+          rules={[{ required: true }]}
+        >
+          <Input
+            value={value2}
+            onChange={(e) => setValue2(e.target.value)}
+            type="date"
+            style={{ width: 300 }}
+          />
+        </Form.Item>
+      </Form>
     </div>
   );
 }
