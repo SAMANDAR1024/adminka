@@ -16,7 +16,8 @@ const UserApi = {
       name: values.name,
       email: values.email,
       password: values.password,
-      image: values.image.file.response.url,
+      phone:values.phone,
+      image: values.image.file?.response.url,
       role: values.role,
     });
   },
@@ -26,7 +27,7 @@ const UserApi = {
       name: values.name,
       email: values.email,
       password: values.password,
-      image: values.image.file.response.url,
+      image: values?.image?.file.response.url,
       role: values.role,
     });
   },

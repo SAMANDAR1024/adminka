@@ -47,12 +47,14 @@ function User() {
         console.log("XATO!", e);
       });
   }
+  
 
   return (
     <div className="pl-40  p-10 overflow-y-auto h-[600px]">
       <div className=" flex justify-between items-center mb-5">
         <AddUser onUserAdded={fetchUsers} />
       </div>
+      
       <Table
         pagination={{
           current: page,
@@ -61,8 +63,10 @@ function User() {
           onChange: (page) => setPage(page),
           showTotal: (total) => `Jami: ${total} foydalanuvchi`,
         }}
+        
         loading={loading}
         style={{ height: 100 }}
+        
         dataSource={user.map((item) => {
           return {
             ...item,
@@ -95,6 +99,12 @@ function User() {
             title: "CreatedAt",
             dataIndex: "createdAt",
           },
+          {
+            key: "phone",
+            title: "Phone",
+            dataIndex: "phone",
+          },
+          
           {
             key: "image",
             title: "Image",
@@ -136,12 +146,15 @@ function User() {
         ]}
       />
 
+
       <EditUser
         item={selectedState}
         set={setSelectedState}
         fetchUsers={fetchUsers}
       />
+      
     </div>
+    
   );
 }
 

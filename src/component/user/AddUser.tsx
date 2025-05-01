@@ -46,6 +46,13 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
             <Input placeholder="Emailni kiriting" />
           </Form.Item>
           <Form.Item
+            name="phone"
+            label="Phone"
+            rules={[{ required: true }]}
+          >
+            <Input type="phone" placeholder="Telefon Raqamingizni Kiriting" />
+          </Form.Item>
+          <Form.Item
             name="password"
             label="Password"
             rules={[{ required: true, min: 5 }]}
