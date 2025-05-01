@@ -1,13 +1,10 @@
 import { Form, Input, message, Spin } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { DashboardType } from "../../type/type";
+import { ChartType, DashboardType } from "../../type/type";
 import { ApexCart } from "./ApexCart";
 
-export type ChartType = {
-  date: string;
-  count: string;
-}[];
+
 function Dashboard() {
   const [dashboard, setDashboard] = useState<DashboardType>();
   const [loading, setLoading] = useState(true);
@@ -21,8 +18,7 @@ function Dashboard() {
         setDashboard(res.data);
         setLoading(false);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch(() => {
         message.error("xatolik");
       })
       .finally(() => {
@@ -35,7 +31,6 @@ function Dashboard() {
         endDate: value2,
       })
       .then((res) => {
-        console.log("Serverdan javob:", res.data);
         setChart(res.data);
       })
       .catch((err) => {

@@ -10,11 +10,15 @@ function User() {
   const [user, setUser] = useState<UserType[]>([]);
   const [selectedState, setSelectedState] = useState<UserType>();
   const [loading, setloading] = useState(true);
-  const fetchUsers = () => {
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(6);
+  const limit = 1;
+  const fetchUsers = (pageNumber = 1) => {
     setloading(true);
-    UserApi.getAll({ limit: 10, page: 1 })
+    UserApi.getAll({ limit, page: pageNumber })
       .then((res) => {
         setUser(res.data.items);
+        setTotal(res.data.total);
       })
       .catch((e) => {
         console.log("Xato", e);
@@ -24,16 +28,8 @@ function User() {
       });
   };
   useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  // if (loading) {
-  //   return (
-  //     <div className=" absolute left-[50%] top-[50%]  inset-0">
-  //       <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
-  //     </div>
-  //   );
-  // }
+    fetchUsers(page);
+  }, [page]);
 
   function Delete(id: number) {
     const User = user.find((item) => item.id === id);
@@ -58,6 +54,13 @@ function User() {
         <AddUser onUserAdded={fetchUsers} />
       </div>
       <Table
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: total,
+          onChange: (page) => setPage(page),
+          showTotal: (total) => `Jami: ${total} foydalanuvchi`,
+        }}
         loading={loading}
         style={{ height: 100 }}
         dataSource={user.map((item) => {

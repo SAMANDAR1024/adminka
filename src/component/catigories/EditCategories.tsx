@@ -1,10 +1,4 @@
-// function EditCategories() {
-//   return (
-//     <div>EditCategories</div>
-//   )
-// }
 
-// export default EditCategories
 
 import { Button, Drawer, Form, Input } from "antd";
 import { useState } from "react";
@@ -34,12 +28,10 @@ function EditCategories({
           layout="vertical"
           initialValues={item}
           onFinish={(values) => {
-            console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
             CategoriesApi.update(item, values)
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 set(false);
                 fetchCatigories?.();
               })

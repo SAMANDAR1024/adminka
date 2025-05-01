@@ -2,8 +2,12 @@ import { CatigoriesType } from "../type/type";
 import api from "./api";
 
 const CategoriesApi = {
-  getAll: () => {
-    return api.get("/api/categories?limit=10&page=1&order=ASC");
+  getAll: ({ limit = 10, page = 1 } = {}) => {
+    return api.get(`/api/categories?limit=${limit}&page=${page}&order=ASC`);
+  },
+
+  getCategor: () => {
+    return api.get(`/api/categories`);
   },
 
   delete: (id: number) => {

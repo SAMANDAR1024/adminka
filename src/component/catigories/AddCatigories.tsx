@@ -1,10 +1,4 @@
-// function AddCatigories() {
-//   return (
-//     <div>AddCatigories</div>
-//   )
-// }
 
-// export default AddCatigories
 import { Button, Drawer, Form, Input } from "antd";
 import { useState } from "react";
 import CategoriesApi from "../../api/CategoriesApi";
@@ -37,12 +31,10 @@ function AddCatigories({
         <Form
           layout="vertical"
           onFinish={(values) => {
-            console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
             CategoriesApi.getAdd(values)
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 setOpenDraver(false);
                 onCatigoriesAdded?.();
               })

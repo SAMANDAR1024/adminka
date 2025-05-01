@@ -29,13 +29,6 @@ function Banners() {
     fetchBanners();
   }, []);
 
-  //   if (loading) {
-  //     return (
-  //       <div className=" absolute left-[50%] top-[50%]  inset-0">
-  //         <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
-  //       </div>
-  //     );
-  //   }
 
   function Delete(id: number) {
     BannersApi.delete(id)

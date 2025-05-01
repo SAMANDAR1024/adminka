@@ -1,5 +1,5 @@
 import ReactApexChart from "react-apexcharts";
-import { ChartType } from "./Dashboard";
+import { ChartType } from "../../type/type";
 
 export const ApexCart = ({ chart }: { chart: ChartType }) => {
   return (

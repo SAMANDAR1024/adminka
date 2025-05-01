@@ -26,7 +26,6 @@ function EditBanner({
           layout="vertical"
           initialValues={item}
           onFinish={(values) => {
-            console.log("item.id:", item?.id);
 
             if (!item?.id) {
               console.error("ID topilmadi");
@@ -36,8 +35,7 @@ function EditBanner({
 
             BannersApi.update(item, values)
 
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 set(false);
                 fetchBanners?.();
               })

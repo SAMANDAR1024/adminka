@@ -28,8 +28,7 @@ function EditUser({
             setloading(true);
 
             UserApi.update(values, item)
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 set(undefined);
                 fetchUsers();
               })

@@ -26,11 +26,9 @@ function AddBanners({ onBannersAdded }: { onBannersAdded?: () => void }) {
         <Form
           layout="vertical"
           onFinish={(values) => {
-            console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
             BannersApi.getAdd(values)
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 setOpenDraver(false);
                 onBannersAdded?.();
               })
@@ -60,7 +58,7 @@ function AddBanners({ onBannersAdded }: { onBannersAdded?: () => void }) {
               action={`https://nt.softly.uz/api/files/upload`}
             >
               <Button>Click to Upload</Button>
-            </Upload>{" "}
+            </Upload>
           </Form.Item>
 
           <Form.Item>

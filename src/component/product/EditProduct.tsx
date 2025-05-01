@@ -34,12 +34,10 @@ function EditProduct({
           layout="vertical"
           initialValues={item}
           onFinish={(values) => {
-            console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
             ProductApi.update(item, values)
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 set(false);
                 fetchProducts?.();
               })
@@ -90,7 +88,6 @@ function EditProduct({
                 };
               })}
             />
-            {/* <Input placeholder="category Id kiriting" /> */}
           </Form.Item>
           <Form.Item>
             <div className="flex gap-5 justify-end">

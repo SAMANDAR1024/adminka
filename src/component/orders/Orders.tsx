@@ -1,10 +1,3 @@
-// function Orders() {
-//   return (
-//     <div>Orders</div>
-//   )
-// }
-
-// export default Orders
 
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
@@ -24,7 +17,6 @@ function Orders() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UserType[]>([]);
   const [product, setProduct] = useState<ProductType[]>([]);
-  //   const [ProductSelected, setProductSelected] = useState<ProductType>();
 
   const fetchOrders = () => {
     setLoading(true);
@@ -32,7 +24,6 @@ function Orders() {
       .get("/api/orders?limit=10&page=1&order=ASC")
       .then((res) => {
         setOrders(res.data.items);
-        console.log(res.data.items);
       })
       .catch((e) => {
         console.log("Xato", e);
@@ -49,11 +40,7 @@ function Orders() {
 
     ProductApi.getAll().then((res) => {
       setProduct(res.data.items);
-      console.log("product", res.data.items);
     });
-    // api.get("/api/categories?limit=10&page=1&order=ASC").then((res) => {
-    //   setCatigoria(res.data.items);
-    // });
   }, []);
 
   if (loading) {
@@ -78,7 +65,6 @@ function Orders() {
   return (
     <div className="pl-40  p-10 overflow-y-auto h-[600px]">
       <div className=" flex justify-between items-center mb-5">
-        {/* <AddOrders onProductAdded={fetchOrders} /> */}
       </div>
       <Table
         style={{ height: 100 }}
@@ -155,9 +141,6 @@ function Orders() {
                 <div className="flex gap-2">
                   <Button
                     className="cursor-pointer"
-                    // onClick={() => {
-                    //   setProductSelected(m);
-                    // }}
                   >
                     <EditOutlined />
                   </Button>
@@ -174,11 +157,6 @@ function Orders() {
           },
         ]}
       />
-      {/* <EditOrders
-        item={ProductSelected}
-        set={setProductSelected}
-        fetchOrders={fetchOrders}
-      /> */}
     </div>
   );
 }

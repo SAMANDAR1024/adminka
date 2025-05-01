@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Button, Table } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CategoriesApi from "../../api/CategoriesApi";
 import { CatigoriesType } from "../../type/type";
 import AddCatigories from "./AddCatigories";
@@ -12,11 +12,16 @@ function Catigories() {
     useState<CatigoriesType>();
   const [loading, setloading] = useState(true);
 
-  const fetchCatigories = () => {
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(6);
+  const limit = 2;
+
+  const fetchCatigories = useCallback((pageNumber = 1) => {
     setloading(true);
-    CategoriesApi.getAll()
+    CategoriesApi.getAll({ limit: limit, page: pageNumber })
       .then((res) => {
         setCatigories(res.data.items);
+        setTotal(res.data.total);
       })
       .catch((e) => {
         console.log("Xato", e);
@@ -24,18 +29,10 @@ function Catigories() {
       .finally(() => {
         setloading(false);
       });
-  };
-  useEffect(() => {
-    fetchCatigories();
   }, []);
-
-  // if (!catigories.length) {
-  //   return (
-  //     <div className=" absolute left-[50%] top-[50%]  inset-0">
-  //       <div className="w-16 h-16 border-4 border-t-transparent border-gray-900 rounded-full animate-spin"></div>
-  //     </div>
-  //   );
-  // }
+  useEffect(() => {
+    fetchCatigories(page);
+  }, [page]);
 
   function Delete(id: number) {
     CategoriesApi.delete(id)
@@ -53,6 +50,12 @@ function Catigories() {
         <AddCatigories onCatigoriesAdded={fetchCatigories} />
       </div>
       <Table
+        pagination={{
+          pageSize: limit,
+          defaultCurrent: page,
+          total: total,
+          onChange: (page) => setPage(page),
+        }}
         loading={loading}
         style={{ height: 100 }}
         dataSource={catigories.map((item) => {

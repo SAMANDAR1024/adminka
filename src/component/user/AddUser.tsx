@@ -26,12 +26,10 @@ function AddUser({ onUserAdded }: { onUserAdded?: () => void }) {
         <Form
           layout="vertical"
           onFinish={(values) => {
-            console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
             UserApi.getAdd(values)
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 setOpenDraver(false);
                 onUserAdded?.();
               })

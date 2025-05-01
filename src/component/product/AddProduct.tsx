@@ -34,12 +34,10 @@ function AddProducts({ onProductAdded }: { onProductAdded?: () => void }) {
         <Form
           layout="vertical"
           onFinish={(values) => {
-            console.log("Yuborilayotgan ma’lumot:", values);
             setloading(true);
 
             ProductApi.getAdd(values)
-              .then((res) => {
-                console.log("Serverdan javob:", res.data);
+              .then(() => {
                 setOpenDraver(false);
                 onProductAdded?.();
               })

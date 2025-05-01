@@ -76,3 +76,9 @@ export type CatigoriesType = {
   description: string;
   createdAt: string;
 };
+
+
+export type ChartType = {
+  date: string;
+  count: string;
+}[];

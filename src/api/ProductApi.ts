@@ -2,8 +2,8 @@ import { ProductType } from "../type/type";
 import api from "./api";
 
 const ProductApi = {
-  getAll: () => {
-    return api.get("/api/products?limit=10&page=1&order=ASC");
+  getAll: ({ limit = 10, page = 1 } = {}) => {
+    return api.get(`/api/products?limit=${limit}&page=${page}&order=ASC`);
   },
 
   delete: (id: number) => {
