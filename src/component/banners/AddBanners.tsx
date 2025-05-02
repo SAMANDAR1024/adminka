@@ -33,6 +33,7 @@ function AddBanners({ onBannersAdded }: { onBannersAdded?: () => void }) {
                 onBannersAdded?.();
               })
               .catch((err) => {
+                
                 console.error("Xatolik yuz berdi", err.message);
               })
               .finally(() => setloading(false));
